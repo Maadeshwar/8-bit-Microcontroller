@@ -11,8 +11,8 @@ module cpu_core (
     output wire [7:0] uio_oe
 );
 
-    // 16-byte Internal RAM
-    reg [7:0] ram [0:15];
+    // 8-byte Internal RAM
+    reg [7:0] ram [0:7];
     
     // CPU Registers
     reg [7:0] acc;
@@ -80,8 +80,8 @@ module cpu_core (
     // -----------------------------------------------------------
     reg [7:0] data_rdata;
     always @(*) begin
-        if (operand <= 8'h0F) begin
-            data_rdata = ram[operand[3:0]];
+        if (operand <= 8'h07) begin
+            data_rdata = ram[operand[2:0]];
         end else begin
             case (operand)
                 8'h20: data_rdata = {3'b000, uio_in[4:0]}; // GPIO IN
@@ -152,7 +152,7 @@ module cpu_core (
             rx_clear    <= 1'b0;
             wdt_count   <= 16'h0000;
             wdt_enable  <= 1'b0;
-            for (i = 0; i < 16; i = i + 1) ram[i] <= 8'h00;
+            for (i = 0; i < 8; i = i + 1) ram[i] <= 8'h00;
         end else if (wdt_reset_req) begin
             pc_out      <= 8'h00;
             acc         <= 8'h00;
@@ -197,8 +197,8 @@ module cpu_core (
                         end
 
                         8'h03: begin // STR
-                            if (operand <= 8'h0F) begin
-                                ram[operand[3:0]] <= acc;
+                            if (operand <= 8'h07) begin
+                                ram[operand[2:0]] <= acc;
                             end else begin
                                 case (operand)
                                     8'h20: gpio_out <= acc[4:0];
