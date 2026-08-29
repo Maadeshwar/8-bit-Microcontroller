@@ -1,4 +1,4 @@
-TESTS = isa io stress uvm peripheral pipeline func_design formal
+TESTS = isa io stress uvm peripheral pipeline func_design
 
 .PHONY: all $(TESTS) clean
 

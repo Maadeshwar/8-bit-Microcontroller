@@ -1,11 +1,11 @@
 # Tiny Tapeout project information
 project:
-  title:        "TinySoC"
+  title:        "TinySoC v2"
   author:       "Maadesh"
   discord:      ""
-  description:  "An 8-bit Harvard Architecture microcontroller with UART and GPIO"
+  description:  "An 8-bit Harvard Architecture microcontroller with UART, GPIO, and PWM"
   language:     "Verilog"
-  clock_hz:     0
+  clock_hz:     50000000
 
   tiles: "1x1"
 
@@ -45,7 +45,7 @@ pinout:
   uio[4]: "GPIO 4"
   uio[5]: "UART TX"
   uio[6]: "UART RX"
-  uio[7]: "Hardware Timer OUT"
+  uio[7]: "PWM OUT"
 
 # Do not change!
 yaml_version: 6
