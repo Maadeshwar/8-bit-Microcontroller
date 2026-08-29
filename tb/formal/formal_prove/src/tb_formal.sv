@@ -1,0 +1,53 @@
+`default_nettype none
+
+module tb_formal (
+    input wire clk,
+    input wire rst_n,
+    input wire ena,
+    input wire [7:0] ui_in,
+    input wire [7:0] uio_in
+);
+
+    wire [7:0] uo_out;
+    wire [7:0] uio_out;
+    wire [7:0] uio_oe;
+
+    tt_um_micro dut (
+        .ui_in(ui_in),
+        .uo_out(uo_out),
+        .uio_in(uio_in),
+        .uio_out(uio_out),
+        .uio_oe(uio_oe),
+        .ena(ena),
+        .clk(clk),
+        .rst_n(rst_n)
+    );
+
+`ifdef FORMAL
+    // Assume reset is asserted initially
+    reg past_valid;
+    initial past_valid = 0;
+    always @(posedge clk) past_valid <= 1;
+
+    always @(posedge clk) begin
+        if (!past_valid) begin
+            assume(!rst_n);
+        end
+    end
+
+    // Assert that FSM state is always valid (0, 1, or 2)
+    always @(posedge clk) begin
+        if (rst_n) begin
+            assert(dut.core.state == 0 || dut.core.state == 1 || dut.core.state == 2);
+        end
+    end
+
+    // Assert that PC never exceeds 255 (it's 8 bits, so this is trivially true, but good for sanity)
+    always @(posedge clk) begin
+        if (rst_n) begin
+            assert(dut.core.pc_out <= 8'hFF);
+        end
+    end
+`endif
+
+endmodule

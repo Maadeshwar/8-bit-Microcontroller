@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1788012737" />
+    <testcase name="test_uvm" classname="tb_uvm" file="/mnt/d/Tiny-Tapeout/tb/uvm/tb_uvm.py" lineno="43" time="0.04716801643371582" sim_time_ns="2080.0" ratio_time="44097.6779874341" />
+  </testsuite>
+</testsuites>

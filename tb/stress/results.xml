@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1788012734" />
+    <testcase name="test_stress" classname="tb_stress" file="/mnt/d/Tiny-Tapeout/tb/stress/tb_stress.py" lineno="14" time="0.9026639461517334" sim_time_ns="40120.0" ratio_time="44446.21962696184" />
+  </testsuite>
+</testsuites>

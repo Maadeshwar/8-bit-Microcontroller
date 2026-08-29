@@ -1,0 +1,31 @@
+make[1]: Entering directory '/mnt/d/Tiny-Tapeout/tb/pipeline'
+rm -f results.xml
+"make" -f Makefile results.xml
+make[2]: Entering directory '/mnt/d/Tiny-Tapeout/tb/pipeline'
+/usr/bin/iverilog -o sim_build/sim.vvp -s tt_um_micro -g2012 -f sim_build/cmds.f  /mnt/d/Tiny-Tapeout/tb/pipeline/../../src/tt_um_micro.v /mnt/d/Tiny-Tapeout/tb/pipeline/../../src/cpu_core.v /mnt/d/Tiny-Tapeout/tb/pipeline/../../src/uart.v
+/home/maadesh/.local/lib/python3.12/site-packages/cocotb_tools/makefiles/simulators/Makefile.icarus:66: Using MODULE is deprecated, please use COCOTB_TEST_MODULES instead.
+rm -f results.xml
+COCOTB_TEST_MODULES=tb_pipeline COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=tt_um_micro TOPLEVEL_LANG=verilog \
+         /usr/bin/vvp -M /home/maadesh/.local/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /usr/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1788012773
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/maadesh/.local/lib/python3.12/site-packages/cocotb
+     0.00ns DEBUG    cocotb.regression                  Registered test 'tb_pipeline.test_pipeline'
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running tb_pipeline.test_pipeline (1/1)
+                                                            Test FSM state transitions (FETCH -> FETCH_OP -> EXEC)
+     0.00ns WARNING  py.warnings                        /mnt/d/Tiny-Tapeout/tb/pipeline/tb_pipeline.py:14: DeprecationWarning: The 'units' argument has been renamed to 'unit'.
+                                                          cocotb.start_soon(Clock(dut.clk, 20, units="ns").start())
+   200.00ns INFO     cocotb.tt_um_micro                 FSM Pipeline state transitions passed perfectly!
+   200.00ns INFO     cocotb.regression                  tb_pipeline.test_pipeline passed
+   200.00ns INFO     cocotb.regression                  **************************************************************************************
+                                                        ** TEST                          STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        **************************************************************************************
+                                                        ** tb_pipeline.test_pipeline      PASS         200.00           0.01      19373.23  **
+                                                        **************************************************************************************
+                                                        ** TESTS=1 PASS=1 FAIL=0 SKIP=0                200.00           0.01      15643.68  **
+                                                        **************************************************************************************
+make[2]: Leaving directory '/mnt/d/Tiny-Tapeout/tb/pipeline'
+make[1]: Leaving directory '/mnt/d/Tiny-Tapeout/tb/pipeline'

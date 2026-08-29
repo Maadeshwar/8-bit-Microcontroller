@@ -1,0 +1,11 @@
+# running in formal_prove/src/
+read -sv tb_formal.sv
+read -sv tt_um_micro.v
+read -sv cpu_core.v
+read -sv uart.v
+prep -top tb_formal
+
+hierarchy -smtcheck
+rename -witness
+write_jny -no-connections ../model/design.json
+write_rtlil ../model/design.il

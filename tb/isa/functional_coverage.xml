@@ -1,0 +1,17 @@
+<top abs_name="top" size="13" coverage="12" cover_percentage="92.31">
+  <opcode size="13" coverage="12" cover_percentage="92.31" abs_name="top.opcode" weight="1" at_least="1">
+    <bin0 bin="0" hits="17" abs_name="top.opcode.bin0" />
+    <bin1 bin="1" hits="17" abs_name="top.opcode.bin1" />
+    <bin2 bin="2" hits="3" abs_name="top.opcode.bin2" />
+    <bin3 bin="3" hits="9" abs_name="top.opcode.bin3" />
+    <bin4 bin="4" hits="3" abs_name="top.opcode.bin4" />
+    <bin5 bin="5" hits="3" abs_name="top.opcode.bin5" />
+    <bin6 bin="6" hits="0" abs_name="top.opcode.bin6" />
+    <bin7 bin="7" hits="3" abs_name="top.opcode.bin7" />
+    <bin8 bin="8" hits="3" abs_name="top.opcode.bin8" />
+    <bin9 bin="9" hits="3" abs_name="top.opcode.bin9" />
+    <bin10 bin="10" hits="3" abs_name="top.opcode.bin10" />
+    <bin11 bin="11" hits="3" abs_name="top.opcode.bin11" />
+    <bin12 bin="12" hits="3" abs_name="top.opcode.bin12" />
+  </opcode>
+</top>

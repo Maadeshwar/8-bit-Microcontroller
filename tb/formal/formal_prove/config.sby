@@ -1,0 +1,19 @@
+[options]
+mode prove
+depth 20
+
+[engines]
+smtbmc z3
+
+[script]
+read -sv tb_formal.sv
+read -sv tt_um_micro.v
+read -sv cpu_core.v
+read -sv uart.v
+prep -top tb_formal
+
+[files]
+tb_formal.sv
+../../src/tt_um_micro.v
+../../src/cpu_core.v
+../../src/uart.v

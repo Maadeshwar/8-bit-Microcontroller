@@ -1,0 +1,51 @@
+# Tiny Tapeout project information
+project:
+  title:        "TinySoC"
+  author:       "Maadesh"
+  discord:      ""
+  description:  "An 8-bit Harvard Architecture microcontroller with UART and GPIO"
+  language:     "Verilog"
+  clock_hz:     0
+
+  tiles: "1x1"
+
+  top_module:  "tt_um_micro"
+
+  source_files:
+    - "tt_um_micro.v"
+    - "cpu_core.v"
+    - "uart.v"
+
+pinout:
+  # Inputs
+  ui[0]: "Instruction IN 0"
+  ui[1]: "Instruction IN 1"
+  ui[2]: "Instruction IN 2"
+  ui[3]: "Instruction IN 3"
+  ui[4]: "Instruction IN 4"
+  ui[5]: "Instruction IN 5"
+  ui[6]: "Instruction IN 6"
+  ui[7]: "Instruction IN 7"
+
+  # Outputs
+  uo[0]: "Program Counter OUT 0"
+  uo[1]: "Program Counter OUT 1"
+  uo[2]: "Program Counter OUT 2"
+  uo[3]: "Program Counter OUT 3"
+  uo[4]: "Program Counter OUT 4"
+  uo[5]: "Program Counter OUT 5"
+  uo[6]: "Program Counter OUT 6"
+  uo[7]: "Program Counter OUT 7"
+
+  # Bidirectional pins
+  uio[0]: "GPIO 0"
+  uio[1]: "GPIO 1"
+  uio[2]: "GPIO 2"
+  uio[3]: "GPIO 3"
+  uio[4]: "GPIO 4"
+  uio[5]: "UART TX"
+  uio[6]: "UART RX"
+  uio[7]: "Hardware Timer OUT"
+
+# Do not change!
+yaml_version: 6
