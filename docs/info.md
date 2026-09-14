@@ -9,26 +9,37 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-TinySoC is a custom 8-bit Harvard Architecture microcontroller explicitly designed to fit inside a 1x1 Tiny Tapeout tile (which provides precisely 24 user IO pins: 8 inputs, 8 outputs, and 8 bidirectionals).
+TinySoC v2 is an ultra-compact, high-efficiency 8-bit Harvard Architecture microcontroller designed to fit securely inside a 1x1 Tiny Tapeout tile. It executes instructions out of an external ROM or memory emulator connected to the input pins, while handling internal data through its onboard 8-byte RAM and memory-mapped peripheral registers.
 
-The architecture features:
-- **Harvard Architecture**: Fetches instructions from an external ROM asynchronously via dedicated `ui` (Instruction In) and `uo` (Program Counter Out) pins.
-- **8-bit Instruction Set**: A compact 8-instruction ISA supporting `NOP`, `LDI`, `LDR`, `STR`, `ADD`, `SUB`, `JMP`, and `JZ`.
-- **16-byte Internal RAM**: For scratchpad memory and variables (Mapped to `0x00 - 0x0F`).
-- **Memory-Mapped Peripherals**:
-  - `0x10`: GPIO Data Direction Register (DDR)
-  - `0x11`: GPIO Output Register (PORT)
-  - `0x12`: GPIO Input Register (PIN)
-  - `0x14`: UART TX Data Register (Write to trigger TX)
-  - `0x15`: UART RX Data Register (Read for RX data)
-  - `0x16`: Hardware Timer Compare Match Register
+### The Pipeline
+The CPU operates on a strict 3-stage State Machine:
+1. **FETCH:** The Program Counter (PC) is outputted on the `uo_out` pins. The external memory responds instantly with an opcode on the `ui_in` pins, which is latched into the internal Instruction Register (IR).
+2. **FETCH_OP:** For multi-byte instructions, the PC is incremented and the second byte (the operand) is latched from `ui_in`.
+3. **EXEC:** The CPU executes the instruction, manipulating the Accumulator (ACC) or writing to internal RAM / Peripherals.
+
+### Peripheral Architecture
+To maximize silicon area, all peripherals are accessed via **Memory-Mapped I/O** rather than dedicated instructions.
+* **UART:** A hardware UART transmitter and receiver hardcoded for 115200 baud at a 50 MHz clock (Clock Divider = 434). Writing to address `0x24` automatically latches the byte and shifts it out of `uio_out[5]`.
+* **PWM:** An 8-bit free-running hardware timer constantly compares against the `PWM Duty` register at `0x26`. The result natively drives `uio_out[7]`.
+* **GPIO:** A 5-bit array where direction and output states are explicitly controlled by registers `0x21` and `0x20`, mapping physically to `uio_out[4:0]`.
+* **Watchdog Timer (WDT):** A 16-bit safety timer that will pull the chip into an internal soft reset state if the upper counter hits `0xFF` without being cleared by the software.
 
 ## How to test
 
-Connect a Parallel ROM or an external microcontroller (like an RP2040/ESP32 acting as an instruction emulator) to the 8 input and 8 output pins. The TinySoC will immediately begin executing instructions starting from address `0x00`. 
-Interact with the memory-mapped GPIO pins or send/receive UART signals via the bidirectional `uio` pins.
+Because this is a Harvard Architecture design with 0-cycle fetch latency, testing physically requires consideration of the external memory response time.
+
+1. **High-Speed Execution (50 MHz):** Connect a fast parallel SRAM or ROM chip (with an access latency of <15ns) to the PMOD headers of the Tiny Tapeout demo board. The CPU will output the 8-bit address on the `uo_out` pins, and the ROM must return the instruction on the `ui_in` pins before the next clock edge. At 50 MHz, the UART will run at exactly 115200 baud.
+2. **Emulated Execution (1 MHz or less):** If you are using the RP2040 on the Tiny Tapeout demo board to emulate the ROM using MicroPython or C, you must lower the system clock. The RP2040 firmware must read the GPIO pins, look up the firmware array, and write to the GPIO pins. This cannot happen in 20ns. Clock the project at 1 MHz. Note that your UART baud rate will scale proportionally (e.g., 1,000,000 / 434 = ~2304 baud).
+
+### Pin Mapping Overview
+
+* `ui[7:0]` - Instruction Bus (Input from ROM)
+* `uo[7:0]` - Program Counter (Output to ROM address lines)
+* `uio[4:0]` - GPIO Array (Bidirectional)
+* `uio[5]` - UART TX
+* `uio[6]` - UART RX
+* `uio[7]` - PWM Output
 
 ## External hardware
 
-- Parallel Instruction ROM (or Microcontroller to emulate it)
-- USB-to-UART bridge (optional, for serial communication)
+To run this chip at maximum frequency, a high-speed parallel ROM or SRAM chip (e.g., 74-series logic or dedicated EEPROM) is required to be wired to the input and output PMOD headers. For low-speed execution, the standard Tiny Tapeout RP2040 Demo Board is perfectly sufficient.
