@@ -9,7 +9,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-TinySoC v2 is an ultra-compact, high-efficiency 8-bit Harvard Architecture microcontroller designed to fit securely inside a 1x1 Tiny Tapeout tile. It executes instructions out of an external ROM or memory emulator connected to the input pins, while handling internal data through its onboard 8-byte RAM and memory-mapped peripheral registers.
+TinySoC is an ultra-compact, high-efficiency 8-bit Harvard Architecture microcontroller designed to fit securely inside a 1x1 Tiny Tapeout tile. It executes instructions out of an external ROM or memory emulator connected to the input pins, while handling internal data through its onboard 8-byte RAM and memory-mapped peripheral registers.
 
 ### The Pipeline
 The CPU operates on a strict 3-stage State Machine:

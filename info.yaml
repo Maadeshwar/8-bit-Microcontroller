@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        "TinySoC v2"
+  title:        "TinySoC"
   author:       "Maadesh"
   discord:      ""
   description:  "An 8-bit Harvard Architecture microcontroller with UART, GPIO, and PWM"
