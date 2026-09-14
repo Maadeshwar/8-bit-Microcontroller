@@ -1,6 +1,6 @@
 <div align="center">
 
-# TinySoC v2 : 8-bit Microcontroller
+# TinySoC : 8-bit Microcontroller
 
 <p align="center">
   <img src="https://img.shields.io/badge/Architecture-Harvard-blue?style=for-the-badge" alt="Architecture" />
