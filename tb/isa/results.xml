@@ -1,6 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1788012732" />
-    <testcase name="test_isa" classname="tb_isa" file="/mnt/d/Tiny-Tapeout/tb/isa/tb_isa.py" lineno="14" time="0.046254634857177734" sim_time_ns="1720.0" ratio_time="37185.462717647904" />
-  </testsuite>
-</testsuites>

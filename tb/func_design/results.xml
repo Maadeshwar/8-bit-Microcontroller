@@ -1,6 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1788012775" />
-    <testcase name="test_func_design" classname="tb_func_design" file="/mnt/d/Tiny-Tapeout/tb/func_design/tb_func_design.py" lineno="12" time="0.143815279006958" sim_time_ns="6120.0" ratio_time="42554.58837377011" />
-  </testsuite>
-</testsuites>

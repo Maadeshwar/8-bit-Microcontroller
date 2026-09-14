@@ -1,8 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1788012738" />
-    <testcase name="test_peripheral" classname="tb_peripheral" file="/mnt/d/Tiny-Tapeout/tb/peripheral/tb_peripheral.py" lineno="14" time="1.7159109115600586" sim_time_ns="74220.0" ratio_time="43253.99384081149" />
-    <testcase name="test_pwm" classname="tb_peripheral" file="/mnt/d/Tiny-Tapeout/tb/peripheral/tb_peripheral.py" lineno="76" time="0.12457561492919922" sim_time_ns="5660.0" ratio_time="45434.25294923714" />
-    <testcase name="test_wdt" classname="tb_peripheral" file="/mnt/d/Tiny-Tapeout/tb/peripheral/tb_peripheral.py" lineno="118" time="32.05319309234619" sim_time_ns="1312640.0" ratio_time="40951.9262626424" />
-  </testsuite>
-</testsuites>

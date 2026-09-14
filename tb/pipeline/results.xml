@@ -1,6 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1788012773" />
-    <testcase name="test_pipeline" classname="tb_pipeline" file="/mnt/d/Tiny-Tapeout/tb/pipeline/tb_pipeline.py" lineno="11" time="0.010323524475097656" sim_time_ns="200.0" ratio_time="19373.228637413395" />
-  </testsuite>
-</testsuites>

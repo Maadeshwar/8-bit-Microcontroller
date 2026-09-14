@@ -1,0 +1,31 @@
+make[1]: Entering directory '/mnt/d/8-bit-Microcontroller/tb/uvm'
+rm -f results.xml
+mkdir -p sim_build
+/usr/bin/iverilog -o sim_build/sim.vvp -s tt_um_micro -g2012 -f sim_build/cmds.f  ../../src/tt_um_micro.v ../../src/cpu_core.v ../../src/uart.v
+/home/maadesh/.local/lib/python3.12/site-packages/cocotb_tools/makefiles/simulators/Makefile.icarus:68: Using MODULE is deprecated, please use COCOTB_TEST_MODULES instead.
+rm -f results.xml
+COCOTB_TEST_MODULES=tb_uvm COCOTB_TESTCASE=  COCOTB_TOPLEVEL=tt_um_micro TOPLEVEL_LANG=verilog  COCOTB_LOG_LEVEL=DEBUG     \
+	 /usr/bin/vvp -m /home/maadesh/.local/lib/python3.12/site-packages/cocotb/libs/libcocotbvpi_icarus.so   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:242  in gpi_load_users                  Loaded entry library: '/usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0'
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:233  in gpi_load_users                  Running entry func 'initialize' from loaded library '/home/maadesh/.local/lib/python3.12/site-packages/cocotb/simulator.cpython-312-x86_64-linux-gnu.so'
+     -.--ns INFO     pygpi                              ..ib/pygpi/embed.cpp:114  in initialize                      Using Python 3.12.12 interpreter at /usr/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:74   in gpi_print_registered_impl       GPI: VPI support registered
+     0.00ns INFO     cocotb.initialize                  Seeding Python random module with 1789372888
+     0.00ns INFO     cocotb.initialize                  Initialized cocotb v2.1.0 from /home/maadesh/.local/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb.initialize                  Running on Icarus Verilog version 12.0 (stable)
+     0.00ns DEBUG    cocotb.regression                  Registered test 'tb_uvm.test_uvm'
+     0.00ns INFO     cocotb.regression                  Running tests
+     0.00ns INFO     cocotb.regression                  running tb_uvm.test_uvm (1/1)
+                                                            Small UVM-like test environment
+     0.00ns WARNING  py.warnings                        /mnt/d/8-bit-Microcontroller/tb/uvm/tb_uvm.py:46: DeprecationWarning: The 'units' argument has been renamed to 'unit'.
+                                                          cocotb.start_soon(Clock(dut.clk, 20, units="ns").start())
+  2080.00ns INFO     cocotb.tt_um_micro                 UVM-style test passed!
+  2080.00ns INFO     cocotb.regression                  tb_uvm.test_uvm passed
+  2080.00ns INFO     cocotb.regression                  **************************************************************************************
+                                                        ** TEST                          STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        **************************************************************************************
+                                                        ** tb_uvm.test_uvm                PASS        2080.00           0.05      41123.80  **
+                                                        **************************************************************************************
+                                                        ** TESTS=1 PASS=1 FAIL=0 SKIP=0               2080.00           0.05      39627.84  **
+                                                        **************************************************************************************
+make[1]: Leaving directory '/mnt/d/8-bit-Microcontroller/tb/uvm'
