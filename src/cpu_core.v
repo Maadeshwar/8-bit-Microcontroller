@@ -168,20 +168,6 @@ module cpu_core (
             tx_start    <= 1'b0;
             rx_clear    <= 1'b0;
             for (i = 0; i < 8; i = i + 1) ram[i] <= 8'h00;
-            acc         <= 8'h00;
-            ir          <= 8'h00;
-            operand     <= 8'h00;
-            ret_addr    <= 8'h00;
-            flag_z      <= 1'b0;
-            flag_c      <= 1'b0;
-            timer       <= 8'h00;
-            baud_div    <= 16'd434;
-            gpio_out    <= 5'h00;
-            gpio_dir    <= 5'h00;
-            pwm_duty    <= 8'h00;
-            pwm_counter <= 8'h00;
-            tx_start    <= 1'b0;
-            rx_clear    <= 1'b0;
         end else if (ena) begin
             timer       <= timer + 1; // Timer always ticking
             pwm_counter <= pwm_counter + 1; // PWM counter always ticking
