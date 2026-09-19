@@ -73,7 +73,7 @@ It defaults to `434` on reset, which provides 115200 baud at 50 MHz.
 * **Receive:** Poll `0x25` until Bit 0 is `1` (data ready). Read `0x23` to get the byte (this automatically clears the ready flag).
 
 ### PWM
-Write any 8-bit value to `0x26` to set the duty cycle of the `PWM OUT` pin. `0x00` is fully off, `0x0F` is fully on (100% duty cycle). The PWM timer runs independently of the CPU.
+Write any 8-bit value to `0x26` to set the duty cycle of the `PWM OUT` pin. `0x00` is fully off, `0xFF` is fully on (100% duty cycle). The PWM timer runs independently of the CPU.
 
 
 ## Tooling
