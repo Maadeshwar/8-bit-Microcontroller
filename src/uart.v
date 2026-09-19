@@ -37,6 +37,8 @@ module uart_tx (
             case (state)
                 IDLE: begin
                     tx        <= 1'b1;
+                    clk_count <= 16'd0;
+                    bit_index <= 3'd0;
                     
                     
                     if (tx_start) begin
@@ -47,7 +49,7 @@ module uart_tx (
 
                 START: begin
                     tx <= 1'b0; // Start bit is LOW
-                    if (clk_count != clks_per_bit) begin
+                    if (clk_count < clks_per_bit) begin
                         clk_count <= clk_count + 1;
                     end else begin
                         clk_count <= 16'd0;
@@ -57,7 +59,7 @@ module uart_tx (
 
                 DATA: begin
                     tx <= tx_data_reg[0]; // LSB first via shift register
-                    if (clk_count != clks_per_bit) begin
+                    if (clk_count < clks_per_bit) begin
                         clk_count <= clk_count + 1;
                     end else begin
                         clk_count   <= 16'd0;
@@ -73,7 +75,7 @@ module uart_tx (
 
                 STOPBIT: begin
                     tx <= 1'b1; // Stop bit is HIGH
-                    if (clk_count != clks_per_bit) begin
+                    if (clk_count < clks_per_bit) begin
                         clk_count <= clk_count + 1;
                     end else begin
                         clk_count <= 16'd0;
@@ -134,8 +136,8 @@ module uart_rx (
 
             case (state)
                 IDLE: begin
-                    
-                    
+                    clk_count <= 16'd0;
+                    bit_index <= 3'd0;
                     // Falling edge = start bit detected
                     if (rx_r2 == 1'b0) begin
                         state <= START;
@@ -159,7 +161,7 @@ module uart_rx (
 
                 // Sample each bit at the center of the bit period
                 DATA: begin
-                    if (clk_count != clks_per_bit) begin
+                    if (clk_count < clks_per_bit) begin
                         clk_count <= clk_count + 1;
                     end else begin
                         clk_count          <= 16'd0;
@@ -174,7 +176,7 @@ module uart_rx (
                 end
 
                 STOPBIT: begin
-                    if (clk_count != clks_per_bit) begin
+                    if (clk_count < clks_per_bit) begin
                         clk_count <= clk_count + 1;
                     end else begin
                         // Only assert rx_ready if stop bit is valid HIGH
