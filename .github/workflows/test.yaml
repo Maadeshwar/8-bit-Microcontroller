@@ -11,7 +11,7 @@ jobs:
 
       - name: Install iverilog
         shell: bash
-        run: sudo apt-get update && sudo apt-get install -y iverilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog verilator
 
       # Set Python up and install cocotb
       - name: Setup python
@@ -31,7 +31,7 @@ jobs:
           make all || {
             echo ""
             echo "========== isa/verification_run.log =========="
-            cat isa/verification_run.log
+            tail -n 50 */*_run.log
             echo "==============================================="
             exit 1
           }
