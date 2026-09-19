@@ -35,7 +35,6 @@ An ultra-compact 8-bit Harvard Architecture microcontroller designed specificall
 TinySoC is designed to maximize computational density within a constrained 1x1 tile footprint on the SkyWater 130nm node. 
 
 * **Target Density:** 0.90 (PPA optimized with down-counter architecture for maximum routing space).
-* **Standard Cell Utilization:** ~87.85% logic density.
 * **Operating Frequency:** 50 MHz native simulation (Dynamically adaptable to system clock).
 * **Bus Architecture:** 8-bit internal data bus, 8-bit multiplexed external instruction fetch.
 
