@@ -1,0 +1,5 @@
+cocotb>=2.0
+pytest
+cocotb-coverage==2.0
+python-constraint>=1.4
+pyyaml

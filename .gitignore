@@ -1,0 +1,18 @@
+# Build artifacts
+sim_build/
+__pycache__/
+*.pyc
+*.pyo
+
+# Test output files
+verification_run.log
+results.xml
+functional_coverage.xml
+dump.vcd
+*.vcd
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
