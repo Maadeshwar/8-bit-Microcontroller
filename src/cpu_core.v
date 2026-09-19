@@ -96,6 +96,7 @@ module cpu_core (
                 8'h26: data_rdata = pwm_duty;              // PWM DUTY
                 8'h28: data_rdata = baud_div[7:0];         // BAUD_DIV_L
                 8'h29: data_rdata = baud_div[15:8];        // BAUD_DIV_H
+                default: data_rdata = 8'h00;
             endcase
         end
     end

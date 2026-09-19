@@ -16,3 +16,8 @@ dump.vcd
 Thumbs.db
 *.swp
 *.swo
+test/soc_full/obj_dir/
+test/soc_full/annotated_logs/
+test/soc_full/coverage.dat
+test/soc_full/sim_build/
+results.xml
