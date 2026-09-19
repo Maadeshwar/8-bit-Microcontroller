@@ -8,6 +8,8 @@
   <img src="https://img.shields.io/badge/Clock-Fully_Dynamic-red?style=for-the-badge" alt="Clock" />
   <img src="https://img.shields.io/badge/Status-Silicon_Ready-brightgreen?style=for-the-badge" alt="Status" />
   <img src="https://img.shields.io/badge/License-Apache_2.0-yellow?style=for-the-badge" alt="License" />
+  <img src="https://img.shields.io/badge/PPA-Optimized-purple?style=for-the-badge" alt="PPA Optimized" />
+  <img src="https://img.shields.io/badge/Node-Sky130-lightgrey?style=for-the-badge" alt="Node" />
 </p>
 
 An ultra-compact 8-bit Harvard Architecture microcontroller designed specifically for the Tiny Tapeout platform. Built for extreme efficiency, it packs a Turing-complete CPU, SRAM, fully dynamic UART, PWM, and GPIO into a single 1x1 Sky130 tile.
@@ -32,7 +34,7 @@ An ultra-compact 8-bit Harvard Architecture microcontroller designed specificall
 
 TinySoC is designed to maximize computational density within a constrained 1x1 tile footprint on the SkyWater 130nm node. 
 
-* **Target Density:** 0.94 (Optimal utilization for minimal wire capacitance without antenna violations).
+* **Target Density:** 0.90 (PPA optimized with down-counter architecture for maximum routing space).
 * **Standard Cell Utilization:** ~87.85% logic density.
 * **Operating Frequency:** 50 MHz native simulation (Dynamically adaptable to system clock).
 * **Bus Architecture:** 8-bit internal data bus, 8-bit multiplexed external instruction fetch.
