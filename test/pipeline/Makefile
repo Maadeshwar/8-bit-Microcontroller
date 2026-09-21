@@ -1,7 +1,7 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 ifneq ($(GATES),yes)
-VERILOG_SOURCES += ../../src/tt_um_micro.v
+VERILOG_SOURCES += ../../src/tt_um_tinysoc.v
 VERILOG_SOURCES += ../../src/cpu_core.v
 VERILOG_SOURCES += ../../src/uart.v
 else
@@ -14,7 +14,7 @@ VERILOG_SOURCES += $(PDK_ROOT)/ihp-sg13g2/libs.ref/sg13g2_io/verilog/sg13g2_io.v
 VERILOG_SOURCES += $(PDK_ROOT)/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v
 VERILOG_SOURCES += ../gate_level_netlist.v
 endif
-TOPLEVEL = tt_um_micro
+TOPLEVEL = tt_um_tinysoc
 MODULE = tb_pipeline
 
 # Maximize log output

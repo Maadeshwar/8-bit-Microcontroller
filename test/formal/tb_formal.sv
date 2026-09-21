@@ -12,7 +12,7 @@ module tb_formal (
     wire [7:0] uio_out;
     wire [7:0] uio_oe;
 
-    tt_um_micro dut (
+    tt_um_tinysoc dut (
         .ui_in(ui_in),
         .uo_out(uo_out),
         .uio_in(uio_in),

@@ -9,10 +9,10 @@ project:
 
   tiles: "1x1"
 
-  top_module:  "tt_um_micro"
+  top_module:  "tt_um_tinysoc"
 
   source_files:
-    - "tt_um_micro.v"
+    - "tt_um_tinysoc.v"
     - "cpu_core.v"
     - "uart.v"
 

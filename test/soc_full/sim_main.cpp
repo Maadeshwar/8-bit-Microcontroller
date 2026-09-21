@@ -1,13 +1,13 @@
 #include <iostream>
 #include <verilated.h>
 #include <verilated_cov.h>
-#include "Vtt_um_micro.h"
+#include "Vtt_um_tinysoc.h"
 #include "firmware.h"
 
 int main(int argc, char** argv) {
     Verilated::commandArgs(argc, argv);
     
-    Vtt_um_micro* dut = new Vtt_um_micro;
+    Vtt_um_tinysoc* dut = new Vtt_um_tinysoc;
 
     dut->ena = 1;
     dut->uio_in = 1 << 6; // RX idle

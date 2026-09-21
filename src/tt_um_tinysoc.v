@@ -1,6 +1,6 @@
 `default_nettype none
 
-module tt_um_micro (
+module tt_um_tinysoc (
     input  wire [7:0] ui_in,    // Dedicated inputs: Instruction Input
     output wire [7:0] uo_out,   // Dedicated outputs: Program Counter (Address)
     input  wire [7:0] uio_in,   // IOs: Input path
