@@ -1,4 +1,5 @@
 cocotb>=2.0
+click>=8.1
 pytest
 cocotb-coverage==2.0
 python-constraint>=1.4
