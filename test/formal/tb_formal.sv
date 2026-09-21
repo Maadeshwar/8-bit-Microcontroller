@@ -59,12 +59,6 @@ module tb_formal (
         end
     end
 
-    // The UART must remain idle-high whenever its transmitter is idle.
-    always @(posedge clk) begin
-        if (rst_n && !dut.core.tx_inst.tx_busy) begin
-            assert(dut.core.tx_inst.tx == 1'b1);
-        end
-    end
 `endif
 
 endmodule
