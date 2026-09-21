@@ -12,9 +12,9 @@ project:
   top_module:  "tt_um_tinysoc"
 
   source_files:
-    - "src/tt_um_tinysoc.v"
-    - "src/cpu_core.v"
-    - "src/uart.v"
+    - "tt_um_tinysoc.v"
+    - "cpu_core.v"
+    - "uart.v"
 
 pinout:
   # Inputs
