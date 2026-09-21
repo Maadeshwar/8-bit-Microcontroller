@@ -48,6 +48,23 @@ module tb_formal (
             assert(dut.core.pc_out <= 8'hFF);
         end
     end
+
+    // Pin enables are fixed by the SoC pin contract: GPIO is programmable,
+    // UART TX and PWM are outputs, and UART RX is an input.
+    always @(posedge clk) begin
+        if (rst_n) begin
+            assert(dut.uio_oe[7] == 1'b1);
+            assert(dut.uio_oe[6] == 1'b0);
+            assert(dut.uio_oe[5] == 1'b1);
+        end
+    end
+
+    // The UART must remain idle-high whenever its transmitter is idle.
+    always @(posedge clk) begin
+        if (rst_n && !dut.core.tx_inst.tx_busy) begin
+            assert(dut.core.tx_inst.tx == 1'b1);
+        end
+    end
 `endif
 
 endmodule

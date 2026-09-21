@@ -1,5 +1,5 @@
 ifneq ($(GATES),yes)
-TESTS = isa io stress uvm peripheral pipeline func_design baud soc_full
+TESTS = isa io stress uvm peripheral pipeline func_design baud uart soc_full formal
 else
 TESTS = isa
 endif

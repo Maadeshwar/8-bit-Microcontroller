@@ -15,6 +15,7 @@ int main(int argc, char** argv) {
     
     int cycles = 0;
     bool sent_rx_byte = false;
+    bool rx_gpio_verified = false;
 
     for (int i=0; i<10; i++) {
         dut->clk = 0; dut->eval();
@@ -36,7 +37,10 @@ int main(int argc, char** argv) {
         dut->eval();
         cycles++;
 
-        if (cycles > 300 && cycles < 400 && !sent_rx_byte) {
+        // Start the RX frame only once firmware reaches its RX polling loop.
+        // This makes the integration test deterministic instead of relying
+        // on a fixed wall-clock cycle window.
+        if (pc == 0x66 && !sent_rx_byte) {
             sent_rx_byte = true;
         }
 
@@ -44,7 +48,8 @@ int main(int argc, char** argv) {
             static int rx_state = 0;
             static int rx_count = 0;
             static int bit_idx = 0;
-            static int bdiv = 5;
+            // The RTL down-counter holds each bit for divider + 1 clocks.
+            static int bdiv = 6;
             
             if (rx_state == 0) {
                 dut->uio_in &= ~(1 << 6);
@@ -62,6 +67,12 @@ int main(int argc, char** argv) {
             }
         }
 
+        // The firmware copies the received 0x5A byte to the GPIO data
+        // register.  Require that observable end-to-end result before pass.
+        if (sent_rx_byte && (dut->uio_out & 0x1F) == (0x5A & 0x1F)) {
+            rx_gpio_verified = true;
+        }
+
         if (pc >= 0xF0) {
             std::cout << "TEST FAILED: Hit fail label at PC=0x" << std::hex << pc << std::endl;
             break;
@@ -70,6 +81,13 @@ int main(int argc, char** argv) {
         if (pc == 0 && cycles > 200) {
             break;
         }
+    }
+
+    if (!rx_gpio_verified) {
+        std::cerr << "TEST FAILED: RX byte did not reach GPIO output" << std::endl;
+        dut->final();
+        delete dut;
+        return 1;
     }
 
     std::cout << "SUCCESS: SoC Full Test Passed" << std::endl;
