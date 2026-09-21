@@ -6,13 +6,12 @@
   <img src="https://img.shields.io/badge/Architecture-Harvard-blue?style=for-the-badge" alt="Architecture" />
   <img src="https://img.shields.io/badge/Tile_Size-1x1-orange?style=for-the-badge" alt="Tile Size" />
   <img src="https://img.shields.io/badge/Clock-Fully_Dynamic-red?style=for-the-badge" alt="Clock" />
-  <img src="https://img.shields.io/badge/Status-Silicon_Ready-brightgreen?style=for-the-badge" alt="Status" />
   <img src="https://img.shields.io/badge/License-Apache_2.0-yellow?style=for-the-badge" alt="License" />
   <img src="https://img.shields.io/badge/PPA-Optimized-purple?style=for-the-badge" alt="PPA Optimized" />
   <img src="https://img.shields.io/badge/Node-IHP130_SG13G2-lightgrey?style=for-the-badge" alt="Node" />
 </p>
 
-An ultra-compact 8-bit Harvard Architecture microcontroller designed specifically for the Tiny Tapeout platform. Built for extreme efficiency, it packs a Turing-complete CPU, SRAM, fully dynamic UART, PWM, and GPIO into a single 1x1 IHP SG13G2 tile.
+An ultra-compact 8-bit Harvard Architecture microcontroller designed specifically for the Tiny Tapeout platform. Built for extreme efficiency, it packs a programmable 8-bit CPU, SRAM, configurable UART, PWM, and GPIO into a single 1x1 IHP SG13G2 tile.
 
 </div>
 
@@ -75,13 +74,13 @@ The microcontroller uses strict Memory-Mapped I/O to communicate with peripheral
 | `0x21` | **GPIO Direction** | R/W | 1 configures the corresponding pin as Output, 0 as Input. |
 | `0x22` | **Hardware Timer** | R/W | Free-running 8-bit hardware timer. Writing any value resets it to 0. |
 | `0x23` | **UART RX Data** | R | Reading automatically pops the data and clears the RX ready flag. |
-| `0x24` | **UART TX Data** | W | Writing an 8-bit character triggers serial transmission instantly. |
+| `0x24` | **UART TX Data** | W | Writing an 8-bit character while TX is idle starts serial transmission. |
 | `0x25` | **UART Status** | R | Bit 0: RX Ready, Bit 1: TX Busy. |
 | `0x26` | **PWM Duty** | R/W | 8-bit duty cycle compare threshold. |
 | `0x28` | **BAUD_DIV_L** | R/W | 16-bit UART clock divider (Low Byte). |
 | `0x29` | **BAUD_DIV_H** | R/W | 16-bit UART clock divider (High Byte). |
 
-*Note: Accessing unmapped addresses acts as a hardware `NOP`.*
+*Note: Accessing unmapped addresses acts as a hardware `NOP`. The `0x00` idle value is consumed as a single-byte no-operation; defined instructions otherwise use an opcode byte followed by an operand byte.*
 
 ---
 
@@ -103,8 +102,8 @@ TinySoC utilizes a custom, heavily optimized 16-bit instruction set. Every valid
 | `0x0A` | `XOR addr` | Bitwise XOR memory at `addr` with ACC | Z |
 | `0x0B` | `SHL addr` | Logical Shift Left ACC by memory at `addr` | Z |
 | `0x0C` | `SHR addr` | Logical Shift Right ACC by memory at `addr` | Z |
-| `0x0D` | `CALL addr`| Push return address (current PC) and Jump to `addr` | None |
-| `0x0E` | `RET` | Return from subroutine (Pop address to PC) | None |
+| `0x0D` | `CALL addr`| Save the return address and jump to `addr` | None |
+| `0x0E` | `RET` | Return to the saved address | None |
 | `0x0F` | `JNZ addr` | Jump to `addr` if Zero Flag (Z) is 0 | None |
 | `0x10` | `JC addr` | Jump to `addr` if Carry Flag (C) is 1 | None |
 | `0xFF` | `NOP` | No Operation | None |
@@ -118,11 +117,11 @@ TinySoC utilizes a custom, heavily optimized 16-bit instruction set. Every valid
 ## Peripherals in Detail
 
 ### 1. Dynamic UART
-TinySoC features a fully dynamic, software-configurable UART transceiver. By utilizing a 16-bit fractional divider spanning `0x28` (Low Byte) and `0x29` (High Byte), the core can adapt to any arbitrary external clock speed.
+TinySoC features a software-configurable UART transceiver. A 16-bit integer divider spanning `0x28` (Low Byte) and `0x29` (High Byte) sets the serial bit timing for a wide range of external clock speeds.
 
 The baud rate formula is: `Divider = Clock_Frequency / Target_Baud_Rate`
 
-For example, to achieve a 115200 baud rate on a 50 MHz system clock, the divider is `434` (`0x01B2`). The firmware simply writes `0xB2` to `0x28` and `0x01` to `0x29`. The hardware architecture employs an ultra-efficient zero-check down-counter rather than a massive magnitude comparator, guaranteeing that mid-transmission baud rate changes will not lock up the finite state machine.
+For example, to target 115200 baud on a 50 MHz system clock, the nominal divider is `434` (`0x01B2`). The firmware writes `0xB2` to `0x28` and `0x01` to `0x29`. The UART uses a down-counter for bit timing; divider updates take effect as the UART timing counters reload.
 
 ### 2. Pulse Width Modulation (PWM)
 The 8-bit PWM generator provides a background continuous waveform on `uio[7]`. By writing a value from `0x00` to `0xFF` to `0x26`, the duty cycle can be precisely controlled from 0% to 100%. The PWM counter runs asynchronously from the CPU state machine, meaning it requires zero CPU overhead to maintain the waveform.
@@ -155,18 +154,20 @@ A custom Python assembler is provided in the `software/` directory. It converts 
 ```bash
 python3 software/assembler.py software/demo.asm
 ```
-This generates an output file containing the compiled bytes ready for flashed memory. The assembler resolves custom labels, relative jumps, and macro expansions.
+This generates an output file containing the compiled bytes ready for flashed memory. The assembler resolves labels and numeric operands into the instruction byte stream.
 
 ---
 
 ## Verification Methodology
 
-This repository enforces an aggressive, multi-faceted verification methodology to guarantee silicon reliability. The test harness relies on **Verilator** and **Cocotb** for cycle-accurate simulation.
+This repository uses simulation and formal checks to exercise the CPU, peripherals, and top-level integration. The test harness uses **Icarus Verilog**, **Verilator**, **Cocotb**, and **SymbiYosys** with the Z3 solver.
 
 ### Test Coverage
-* **ISA Verification:** Exhaustive regression tests validating every opcode combination, branching logic, and ALU flag generation.
-* **Peripheral Verification:** Granular validation of the dynamic UART baud generation, glitch immunity on the RX line, and PWM edge alignments.
-* **SoC Integration Test:** A complete C++ firmware testbench (`sim_main.cpp`) runs compiled assembly directly on the Verilated core, achieving 100% valid line coverage across the functional memory map.
+* **ISA Verification:** Regression tests covering the implemented opcodes, branching logic, and ALU flag generation.
+* **UART Verification:** Dedicated checks for TX frame generation, configurable bit timing, RX loopback, RX data clearing, and invalid stop-bit rejection.
+* **Peripheral Verification:** Validation of UART, timer, GPIO, and PWM behavior.
+* **SoC Integration Test:** A C++ firmware testbench (`sim_main.cpp`) runs assembly directly on the Verilated core and checks the end-to-end UART RX-to-GPIO path.
+* **Formal Verification:** SymbiYosys proofs check FSM validity, pin-enable behavior, PC bounds, and UART idle-line behavior.
 
 Run the test suite locally using the included Makefiles:
 ```bash
